@@ -1,11 +1,8 @@
 {
-  "name": "parse-angular-patch",
-  "version": "0.1.0",
-  "homepage": "https://github.com/brandid/parse-angular-patch",
-  "authors": [
-    "@spacenick @arush"
-  ],
-  "main": "dist/parse-angular.js",
+  "name": "angular-parse-patch",
+  "homepage": "https://github.com/mcwebb/angular-parse-patch",
+  "author": "Matthew Webb",
+  "main": "dist/angular-parse-patch.js",
   "description": "A patch for the Parse SDK to make it work natively and seamlessly with AngularJS",
   "keywords": [
     "parse",
