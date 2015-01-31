@@ -62,7 +62,7 @@
 				throw new Error('Parse SDK not available');
 
 			// get a copy to retrofit
-			var ngParse = angular.copy($window.Parse);
+			var ngParse = $window.Parse;
 
 			ngParse.initialize(
 				credentials.appId,
