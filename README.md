@@ -29,7 +29,8 @@ angular.module('xxxx')
   );
 });
 ```
-### Use
+### Basic Use
+When creating a Parse object you must define the fields you want to be able to access without getters/setters. Adding instance methods (like purr below) is of course completly optional.
 ```js
 angular.module('xxxx')
 .controller('myController', function (ngParse, $scope) {
