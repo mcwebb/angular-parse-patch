@@ -30,21 +30,43 @@ angular.module('xxxx')
 });
 ```
 ### Basic Use
-When creating a Parse object you must define the fields you want to be able to access without getters/setters. Adding instance methods (like purr below) is of course completly optional.
+When creating a Parse object you must define the fields you want to be able to access without getters/setters.
 ```js
 angular.module('xxxx')
 .controller('myController', function (ngParse, $scope) {
-  var Cat = new ngParse.Object.extend('Cat', {
+  var Cat = ngParse.Object.extend('Cat', {
+    fields: [
+      'name',
+      'colour',
+      'breed'
+    ]
+  });
+  $scope.cat = new Cat();
+});
+```
+### Advanced Use
+Adding instance methods (like purr below) is of course completly optional. However if you need to define some initialization logic, be sure to call the parent method, otherwise you won't get all the Angularic field goodness.
+```js
+angular.module('xxxx')
+.controller('myController', function (ngParse, $scope) {
+  var Cat = ngParse.Object.extend('Cat', {
     fields: [
       'name',
       'colour',
       'breed'
     ],
+    initialize: function () {
+      // call the parent to bind those fields
+      ngParse.Object.prototype.initialize.apply(this, arguments);
+      // custom logic
+      if (typeof this.breed == 'undefined')
+        this.breed = [];
+    },
     purr: function () {
       console.log(this.name  + ' is happy!');
     }
   });
-  $scope.cat = Cat;
+  $scope.cat = new Cat();
 });
 ```
 ```html
