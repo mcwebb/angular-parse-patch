@@ -107,9 +107,23 @@
 				});
 			}
 
-			ngParse.User.prototype.initialize =
-			ngParse.Object.prototype.initialize =
-			function () {
+			/*
+			 * Including the below would allow custom initialization on User
+			 * objects without calling the parent. But the same can't be
+			 * accomplished for the Parse.Object, so for the sake of consistency
+			 * I have left it out.
+				// no need to overwrite anything, Parse knows.
+				ngParse.User.extend({
+					constructor: function () {
+						if (typeof this.fields === 'object')
+							enablePropAccess(this, this.fields);
+						ngParse.Object.apply(this, arguments);
+					}
+				});
+			*/
+
+			// this runs for both Object and User since User inherits.
+			ngParse.Object.prototype.initialize = function () {
 				if (typeof this.fields === 'object')
 					enablePropAccess(this, this.fields);
 			};
