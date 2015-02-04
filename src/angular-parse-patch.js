@@ -19,7 +19,7 @@
 			},
 			'Query': {
 				// 'get' not advertised as returning promise but currently does
-				instance: ['count', 'each', 'find', 'first', 'get'],
+				instance: ['count', 'each', 'first', 'get'],
 				class: []
 			},
 			'Cloud': {
@@ -74,6 +74,10 @@
 				var currentClass = k;
 				var currentObject = methodsToUpdate[k];
 
+				/* TODO: figure out a way to return an Angular and Parse
+				 * compatible object so that when Parse makes internal calls
+				 * we won't get errors e.g. _thenRunCallbacks()
+				 */
 				/// Patching instance methods
 				currentObject.instance.forEach(function (method) {
 					var origMethod = ngParse[currentClass].prototype[method];
