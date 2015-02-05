@@ -73,3 +73,6 @@ angular.module('xxxx')
 <input type="text" ng-model="cat.name" />
 <button ng-click="cat.purr()">Make me purr</button>
 ```
+### Events
+Angular Parse Patch doesn't use $http on the backend so registering interceptors won't work for Parse calls.
+To get around this Angular Parse Patch will rootScope broadcast 'parse:transfer:start' and 'parse:transfer:end'.
