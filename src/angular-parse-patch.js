@@ -83,12 +83,16 @@
 					var origMethod = ngParse[currentClass].prototype[method];
 					// run the original function but return an angular promise
 					ngParse[currentClass].prototype[method] = function () {
+						$rootScope.$broadcast('parse:transfer:start');
 						var parsePromise = origMethod.apply(this, arguments),
 							defer = $q.defer();
 						parsePromise.then(function (data) {
 							defer.resolve(data);
 						}, function (err) {
 							defer.reject(err);
+						});
+						parsePromise.always(function () {
+							$rootScope.$broadcast('parse:transfer:end');
 						});
 						return defer.promise;
 					};
@@ -99,12 +103,16 @@
 					var origMethod = ngParse[currentClass][method];
 					// run the original function but return an angular promise
 					ngParse[currentClass][method] = function () {
+						$rootScope.$broadcast('parse:transfer:start');
 						var parsePromise = origMethod.apply(this, arguments),
 							defer = $q.defer();
 						parsePromise.then(function (data) {
 							defer.resolve(data);
 						}, function (err) {
 							defer.reject(err);
+						});
+						parsePromise.always(function () {
+							$rootScope.$broadcast('parse:transfer:end');
 						});
 						return defer.promise;
 					};
