@@ -19,7 +19,7 @@
 			},
 			'Query': {
 				// 'get' not advertised as returning promise but currently does
-				instance: ['count', 'each', 'first', 'get'],
+				instance: ['count', 'each'],
 				class: []
 			},
 			'Cloud': {
