@@ -91,9 +91,16 @@
 						}, function (err) {
 							defer.reject(err);
 						});
-						parsePromise.finally(function () {
-							$rootScope.$broadcast('parse:transfer:end');
-						});
+                        if (typeof parsePromise.finally === 'function') {
+                            parsePromise.finally(function () {
+                                $rootScope.$broadcast('parse:transfer:end');
+                            });
+                        }
+                        else if (typeof parsePromise.always === 'function') {
+                            parsePromise.always(function () {
+                                $rootScope.$broadcast('parse:transfer:end');
+                            });
+                        }
 						return defer.promise;
 					};
 				});
@@ -111,9 +118,16 @@
 						}, function (err) {
 							defer.reject(err);
 						});
-						parsePromise.finally(function () {
-							$rootScope.$broadcast('parse:transfer:end');
-						});
+                        if (typeof parsePromise.finally === 'function') {
+                            parsePromise.finally(function () {
+                                $rootScope.$broadcast('parse:transfer:end');
+                            });
+                        }
+                        else if (typeof parsePromise.always === 'function') {
+                            parsePromise.always(function () {
+                                $rootScope.$broadcast('parse:transfer:end');
+                            });
+                        }
 						return defer.promise;
 					};
 				});
