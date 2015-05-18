@@ -91,7 +91,7 @@
 						}, function (err) {
 							defer.reject(err);
 						});
-						parsePromise.always(function () {
+						parsePromise.finally(function () {
 							$rootScope.$broadcast('parse:transfer:end');
 						});
 						return defer.promise;
@@ -111,7 +111,7 @@
 						}, function (err) {
 							defer.reject(err);
 						});
-						parsePromise.always(function () {
+						parsePromise.finally(function () {
 							$rootScope.$broadcast('parse:transfer:end');
 						});
 						return defer.promise;
