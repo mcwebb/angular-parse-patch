@@ -1,6 +1,6 @@
 {
   "name": "angular-parse-patch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Seamless Parse integration with AngularJS",
   "main": "src/angular-parse-patch.js",
   "repository": {
@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/mcwebb/angular-parse-patch",
   "devDependencies": {
-    "gulp": "~3.5.2",
-    "gulp-jshint": "~1.4.0",
-    "gulp-ng-annotate": "^0.5.0",
-    "gulp-uglify": "~0.2.1"
+    "gulp": "~3.8.11",
+    "gulp-jshint": "~1.10.0",
+    "gulp-ng-annotate": "^0.5.3",
+    "gulp-uglify": "~1.2.0"
   }
 }
