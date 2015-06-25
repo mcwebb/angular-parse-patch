@@ -89,7 +89,7 @@
 				throw new Error('Parse SDK not available');
 
 			// get a copy, not a reference
-			var ngParse = angular.copy($window.Parse);
+			var ngParse = merge({}, [$window.Parse], true);
 
 			ngParse.initialize(
 				internal.credentials.appId,
@@ -97,19 +97,18 @@
 			);
 			
 			function getWrappedMethod(type, k, method) {
-				var origMethod;
-				
-				if (type === 'instance') {
-					origMethod = $window.Parse[k].prototype[method];
-				} else if (type === 'class') {
-					origMethod = $window.Parse[k][method];
-				}
-				
-				return function () {
-					// perhaps the passed context should be $window.Parse?
+				return function thisWrappedMethod() {
 					var deferred = $q.defer(),
-						parsePromise = origMethod.apply(ngParse, arguments);
-	
+						parsePromise;
+
+					if (type === 'instance') {
+						// 'this' will refer to the instance on which the method is being called 
+						parsePromise = $window.Parse[k].prototype[method].apply(this, arguments);
+					} else if (type === 'class') {
+						parsePromise = $window.Parse[k][method].apply(ngParse, arguments);
+					}
+					
+					// thisWrappedMethod.caller 
 					parsePromise.then(function (data) {
 						deferred.resolve(data);
 					}, function (error) {
@@ -120,12 +119,19 @@
 				};
 			};
 
+			var method, methodName;
 			for (var k in internal.methodsToUpdate) {
-				for (var method in internal.methodsToUpdate[k].instance) {
-					ngParse[k].prototype[method] = getWrappedMethod('instance', k, method);
+				for (method in internal.methodsToUpdate[k].instance) {
+					methodName = internal.methodsToUpdate[k].instance[method];
+					// need to break the reference between window.Parse and ngParse 
+					// this doesn't work because it seems that the whole property is referenced - i.e. when deleting ngParse property, Parse property is also removed
+					delete ngParse[k].prototype[methodName];
+					ngParse[k].prototype[methodName] = getWrappedMethod('instance', k, methodName);
 				}
-				for (var method in internal.methodsToUpdate[k].class) {
-					ngParse[k][method] = getWrappedMethod('class', k, method);
+				for (method in internal.methodsToUpdate[k].class) {
+					methodName = internal.methodsToUpdate[k].class[method];
+					delete ngParse[k][methodName];
+					ngParse[k][methodName] = getWrappedMethod('class', k, methodName);
 				}
 			}
 
@@ -137,6 +143,28 @@
 
 			return ngParse;
 		};
+	}
+	
+	// copy of angular.merge, not available in 1.3.x angular 
+	function merge(dst, objs, deep) {
+		for (var i = 0, ii = objs.length; i < ii; ++i) {
+			var obj = objs[i];
+			if (!angular.isObject(obj) && !angular.isFunction(obj)) continue;
+			var keys = Object.keys(obj);
+			for (var j = 0, jj = keys.length; j < jj; j++) {
+				var key = keys[j];
+				var src = obj[key];
+			
+				if (deep && angular.isObject(src)) {
+					if (!angular.isObject(dst[key])) dst[key] = angular.isArray(src) ? [] : {};
+					merge(dst[key], [src], true);
+				} else {
+					dst[key] = src;
+				}
+			}
+		}
+		
+		return dst;
 	}
 
 	angular
