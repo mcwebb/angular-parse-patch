@@ -61,7 +61,7 @@
 				internal.credentials.appId,
 				internal.credentials.jsKey
 			);
-			ngParse.serverURL = serverURL;
+			ngParse.serverURL = internal.serverURL;
 			
 			// this runs for both Object and User since User inherits.
 			ngParse.Object.prototype.initialize = function () {
