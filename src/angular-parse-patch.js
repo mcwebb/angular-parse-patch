@@ -1,9 +1,12 @@
 (function (angular) {
 	var internal = {};
 
-	internal.credentials = {
-		appId: '',
-		jsKey: ''
+	internal = {
+		credentials: {
+			appId: '',
+			jsKey: ''
+		},
+		serverURL: ''
 	};
 
 	internal.generateProps = function (instance, fields) {
@@ -40,9 +43,10 @@
 	};
 	
 	function ngParseProvider () {
-		this.initialize = function (appId, jsKey) {
+		this.initialize = function (appId, jsKey, serverURL) {
 			internal.credentials.appId = appId;
 			internal.credentials.jsKey = jsKey;
+			internal.serverURL = serverURL;
 		};
 
 		this.$get = function ($window, $q) {
@@ -57,6 +61,7 @@
 				internal.credentials.appId,
 				internal.credentials.jsKey
 			);
+			ngParse.serverURL = serverURL;
 			
 			// this runs for both Object and User since User inherits.
 			ngParse.Object.prototype.initialize = function () {
